@@ -1,0 +1,156 @@
+SQL> create table course(
+  2  course_id Number(5)primary key,
+  3  course_name Varchar2(20) Not Null
+  4  );
+
+Table created.
+
+SQL> create table student(
+  2  student_regno Number(10)primary key,
+  3  student_name Varchar2(20)Not Null,
+  4  student_course_id Number(5)References course(course_id),
+  5  student_age Number(3) check(student_age>=18),
+  6  student_mail Varchar2(30)Unique,
+  7  student_gender Char(2)Default'M'
+  8  );
+
+Table created.
+
+SQL> INSERT INTO COURSE VALUES(01,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO COURSE VALUES(03,'ECE');
+
+1 row created.
+
+SQL> INSERT INTO COURSE VALUES(101,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@2076);
+INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@2076)
+                                                           *
+ERROR at line 1:
+ORA-01729: database link name expected 
+
+
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM);
+INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM,M);
+INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM,M)
+                                                                    *
+ERROR at line 1:
+ORA-00984: column not allowed here 
+
+
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM,'M');
+INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,CHANDU@MAIL.COM,'M')
+*
+ERROR at line 1:
+ORA-04054: database link MAIL.COM does not exist 
+
+
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,chandu2076@gmail.com,'M')
+  2  
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,chandu2076@gmail.com,'M')
+  2  
+SQL> INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,chandu2076@gmail.com,'M');
+INSERT INTO STUDENT VALUES(A101,CHANDRASHEKAR,01,19,chandu2076@gmail.com,'M')
+*
+ERROR at line 1:
+ORA-04054: database link GMAIL.COM does not exist 
+
+
+SQL> 
+SQL> INSERT INTO STUDENT VALUES('A101','CHANDRASHEKAR',01,19,'chandu2076@gmail.com','M');
+INSERT INTO STUDENT VALUES('A101','CHANDRASHEKAR',01,19,'chandu2076@gmail.com','M')
+                           *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> INSERT INTO STUDENT VALUES('101','CHANDRASHEKAR',01,19,'chandu2076@gmail.com','M');
+
+1 row created.
+
+SQL> 
+SQL> INSERT INTO STUDENT VALUES('093','tharish',01,19,'tharish2076@gmail.com','M');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES('062','jaanu',01,19,'jaanu2076@gmail.com','M');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES('043','sudheer',01,19,'kanna2076@gmail.com','M');
+
+1 row created.
+ 
+SQL> 
+SQL> select * from student;
+
+STUDENT_REGNO STUDENT_NAME         STUDENT_COURSE_ID STUDENT_AGE                
+------------- -------------------- ----------------- -----------                
+STUDENT_MAIL                   ST                                               
+------------------------------ --                                               
+          101 CHANDRASHEKAR                        1          19                
+chandu2076@gmail.com           M                                                
+                                                                                
+           93 tharish                              1          19                
+tharish2076@gmail.com          M                                                
+                                                                                
+           62 jaanu                                1          19                
+jaanu2076@gmail.com            M                                                
+                                                                                
+
+STUDENT_REGNO STUDENT_NAME         STUDENT_COURSE_ID STUDENT_AGE                
+------------- -------------------- ----------------- -----------                
+STUDENT_MAIL                   ST                                               
+------------------------------ --                                               
+           43 sudheer                              1          19                
+kanna2076@gmail.com            M                                                
+                                                                                
+
+SQL> INSERT INTO STUDENT VALUES('043','sudheer',04,19,'kanna2076@gmail.com','M');
+INSERT INTO STUDENT VALUES('043','sudheer',04,19,'kanna2076@gmail.com','M')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (A101.SYS_C0029392) violated 
+
+
+SQL> INSERT INTO STUDENT VALUES('043','harika',03,19,'harika2076@gmail.com','M');
+INSERT INTO STUDENT VALUES('043','harika',03,19,'harika2076@gmail.com','M')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (A101.SYS_C0029392) violated 
+
+
+SQL> INSERT INTO STUDENT VALUES('023','harika',03,19,'harika2076@gmail.com','M');
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES('032','harika',04,19,'harika2076@gmail.com','M');
+INSERT INTO STUDENT VALUES('032','harika',04,19,'harika2076@gmail.com','M')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (A101.SYS_C0029393) violated 
+
+
+SQL> Alter Table student Add city Varchar2(20);
+
+Table altered.
+
+SQL> insert into student (city)values('kpm');
+insert into student (city)values('kpm')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("A101"."STUDENT"."STUDENT_REGNO") 
+
+
+SQL> spool off
